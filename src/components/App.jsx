@@ -1,3 +1,5 @@
+import ContactBook from './ContactBook';
+
 export const App = () => {
   return (
     <div
@@ -10,7 +12,7 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      <h1>Radu</h1>
+      <ContactBook />
     </div>
   );
 };
