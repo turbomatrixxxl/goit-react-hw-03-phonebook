@@ -8,17 +8,37 @@ import styles from './ContactBook.module.css';
 
 export default class ContactBook extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     name: '',
     number: '',
     disabled: true,
     searchTherm: '',
   };
+
+  async componentDidMount() {
+    try {
+      const localstorageContacts = localStorage.getItem('contacts');
+      const localContacts = JSON.parse(localstorageContacts);
+
+      if (localContacts === null || localContacts.length === 0) {
+        alert('Nu aveti contacte salvate in lista !');
+        return;
+      }
+
+      this.setState({
+        ...this.state,
+        contacts: localContacts,
+      });
+    } catch (error) {
+      alert('Nu aveti contacte salvate in lista !');
+      console.log(error.message);
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    // localStorage.clear();
+  }
 
   handleSubmit = ev => {
     ev.preventDefault();
@@ -56,7 +76,7 @@ export default class ContactBook extends Component {
     }
 
     const isExist = this.state.contacts.find(contact => {
-      console.log(contact.name === value);
+      // console.log(contact.name === value);
       return contact.name === value;
     });
     if (isExist) {
